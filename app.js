@@ -3,12 +3,13 @@ const moment = require('moment')
 
 const express = require('express')
 const apicache = require('apicache')
-const talkback = require('talkback')
 
 const middleware_cors = require('cors')
 const middleware_proxy = require('http-proxy-middleware')
 
+const talkback = require('./lib/talkback-enhanced')
 const config = require('./config')
+
 const local = config.local
 const remote = config.remotes.find(r => r.env === config.env)
 const cache = config.cache
@@ -24,14 +25,16 @@ listener.options('*',
         maxAge: 86400,
         optionsSuccessStatus: 200,
         preflightContinue: false
-    }))
-console.log('CORS preflight enabled')
+    })
+)
+console.log('CORS (preflight) enabled')
 
 listener.use(
     middleware_cors({
         credentials: true,
         origin: true
-    }))
+    })
+)
 console.log('CORS enabled')
 
 if (cache.enable) {
@@ -46,8 +49,9 @@ if (cache.enable) {
     listener.get('*',
         middleware_cache(
             cache.duration
-        ))
-    console.log('Cache enabled')
+        )
+    )
+    console.log(`Cache enabled`)
 }
 
 if (record.enable) {
@@ -60,29 +64,37 @@ if (record.enable) {
         port: local.port.record,
         path: `tapes/${config.env}/${session}`,
         ignoreHeaders: record.ignoreHeaders,
+        ignoreBody: record.ignoreBody,
         record: !record.recapOnly,
+        fallback: record.fallbackWhenRecapOnly,
         silent: !record.debug,
         summary: record.debug
     })
 
-    recorder.start(
-        () => console.log(
+    recorder.start(() =>
+        console.log(
             `Recording on port ${local.port.record}`
-        ))
-    console.log('Record enabled')
+        )
+    )
+    console.log('Recorder enabled')
 }
+
+const uri = record.enable
+    ? `http://localhost:${local.port.record}`
+    : remote.uri
 
 listener.use(
     middleware_proxy({
-        target: record.enable
-            ? `http://localhost:${local.port.record}`
-            : remote.uri,
+        target: uri,
         changeOrigin: true,
-        ws: true
-    }))
-console.log('Proxy enabled')
+        ws: true,
+        logLevel: config.proxyLogLevel
+    })
+)
+console.log(`Proxy to (${uri}) enabled`)
 
 listener.listen(
     local.port.listen, () => console.log(
         `Listening on port ${local.port.listen}`
-    ))
+    )
+)

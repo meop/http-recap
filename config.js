@@ -1,5 +1,6 @@
 module.exports = {
     env : 'tst',
+    proxyLogLevel: 'warn',
     cache: {
         enable: true,
         duration: '20 minutes',
@@ -44,7 +45,9 @@ module.exports = {
             'x-original-url',
             'x-requested-with'
         ],
+        ignoreBody: false,
         recapOnly: false,
+        fallbackWhenRecapOnly: true,
         tapeInSessions: true,
         tapeToUseWhenNotInSessions: 'current',
         debug: true
