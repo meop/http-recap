@@ -30,7 +30,8 @@ Probably you would find most use out of this library for:
 1. Caching by itself and tweaking the parameters, or opening up the code and changing handlers to cache only certain routes you care about.
 2. Recording in a session and then doing development work for an hour or two, and testing your code across a few browers with the same known, cached data, then discarding the session.
 3. Recording, without sessions, without request body matching, and putting in place some stubs for UI work on unfinished API work. This way stubs are not in either your UI or API project! And they can last indefinitely!
-4. Creating different named tapes for yourself if you need to switch back and forth between work.
+4. Recording, without any header blacklists, and troubleshooting client side request header issues.
+5. Creating different named tapes for yourself if you need to switch back and forth between work.
 
 If you want to use it for actually integration testing the API layer, which is another common use case for tools like this, you should probably just check out Node-replay or similar preexisting library.. since they are optimized for that use case already.
 
