@@ -5,6 +5,8 @@ Although built as a node.js library, it can be used to playback requests from an
 Very useful for integration tests environments or mocking HTTP servers.   
 Heavily inspired by [flickr/yakbak](https://github.com/flickr/yakbak).   
 
+Read more about the reasoning behind **talkback** on [10Pines blog](https://blog.10pines.com/2017/12/18/isolating-integration-tests-from-external-http-services-with-talkback/).   
+
 [![npm version](https://badge.fury.io/js/talkback.svg)](https://badge.fury.io/js/talkback)
 [![Build Status](https://travis-ci.org/ijpiantanida/talkback.svg?branch=master)](https://travis-ci.org/ijpiantanida/talkback)
 
@@ -31,7 +33,7 @@ const opts = {
   path: "./my-tapes"
 };
 const server = talkback(opts);
-server.start(() => console.log("Talkback Started");
+server.start(() => console.log("Talkback Started"));
 server.close();
 ```
 
@@ -46,9 +48,11 @@ Options:
 | **port** | `String` |Talkback port | 8080|
 | **path** | `String` | Path where to load and save tapes | `./tapes/` |
 | **ignoreHeaders** | `[String]` | List of headers to ignore when matching tapes. Useful when having dynamic headers like cookies or correlation ids. | `[]` |
+| **ignoreQueryParams** | `[String]` | List of query params to ignore when matching tapes. Useful when having dynamic query params like timestamps. | `[]` |
 | **record** | `Boolean` | Whether talkback should proxy and record unknown requests or fail fast and return 404 | `true` |
 | **silent** | `Boolean` | Whether to print information console messages in the middle of requests | `false` |
 | **summary** | `Boolean` | Whether to print a summary of new and unused tapes at exit | `true` |
+| **debug** | `Boolean` | Whether to print verbose debug information | `false` |
 
 ### start([callback])
 Starts the HTTP server and if provided calls `callback` after the server has successfully started.

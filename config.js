@@ -10,8 +10,7 @@ module.exports = {
             'accept-language',
             'cookie',
             'dnt',
-            'user-agent',
-            'x-requested-with'
+            'user-agent'
         ],
         headers: {
             'cache-control': 'no-cache, no-store, must-revalidate',
@@ -41,6 +40,7 @@ module.exports = {
             'referer',
             'user-agent',
             'x-arr-log-id',
+            'x-client-ip',
             'x-forwarded-for',
             'x-original-url',
             'x-requested-with'
