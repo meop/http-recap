@@ -47,7 +47,7 @@ module.exports = {
         ],
         ignoreBody: false,
         recapOnly: false,
-        fallbackWhenRecapOnly: true,
+        fallbackMode: 'proxy',
         tapeInSessions: true,
         tapeToUseWhenNotInSessions: 'current',
         debug: true

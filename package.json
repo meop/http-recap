@@ -1,10 +1,16 @@
 {
-  "devDependencies": {
+  "name": "http-recap",
+  "description": "A node.js http cache and tape recorder",
+  "version": "0.1.1",
+  "license": "MIT",
+  "author": "Marshall Porter",
+  "main": "app.js",
+  "dependencies": {
     "apicache": "^1.2.1",
     "cors": "^2.8.4",
     "express": "^4.16.3",
     "http-proxy-middleware": "^0.18.0",
     "moment": "^2.22.0",
-    "talkback": "./lib/talkback-enhanced/"
+    "talkback": "^1.4.0"
   }
 }

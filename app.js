@@ -7,7 +7,7 @@ const apicache = require('apicache')
 const middleware_cors = require('cors')
 const middleware_proxy = require('http-proxy-middleware')
 
-const talkback = require('./lib/talkback-enhanced')
+const talkback = require('talkback')
 const config = require('./config')
 
 const local = config.local
@@ -66,7 +66,7 @@ if (record.enable) {
         ignoreHeaders: record.ignoreHeaders,
         ignoreBody: record.ignoreBody,
         record: !record.recapOnly,
-        fallback: record.fallbackWhenRecapOnly,
+        fallbackMode: record.fallbackMode,
         silent: !record.debug,
         summary: record.debug
     })
