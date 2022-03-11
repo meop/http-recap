@@ -6,12 +6,14 @@ import middleware_cors from 'cors'
 import middleware_proxy from 'http-proxy-middleware'
 
 import talkback from 'talkback'
-import { local as _local, remotes, env, cache as _cache, record as _record, proxyLogLevel } from './config'
+import {
+    cache,
+    local,
+    proxy,
+    record,
+    remote,
+} from './config'
 
-const local = _local
-const remote = remotes.find(r => r.env === env)
-const cache = _cache
-const record = _record
 
 let listener = express()
 
@@ -53,9 +55,9 @@ if (cache.enable) {
 }
 
 if (record.enable) {
-    const session = record.tapeInSessions
+    const session = record.useSessions
         ? dayjs().format("YYYY-MM-DD-HH_mm_ss")
-        : record.tapeToUseWhenNotInSessions
+        : 'current'
 
     let recorder = talkback({
         host: remote.uri,
@@ -63,8 +65,12 @@ if (record.enable) {
         path: `tapes/${env}/${session}`,
         ignoreHeaders: record.ignoreHeaders,
         ignoreBody: record.ignoreBody,
-        record: !record.recapOnly,
-        fallbackMode: record.fallbackMode,
+        record: record.recordMode
+            ? talkback.Options.RecordMode.NEW
+            : talkback.Options.RecordMode.DISABLED,
+        fallbackMode: record.fallbackMode
+            ? talkback.Options.FallbackMode.PROXY
+            : talkback.Options.FallbackMode.NOT_FOUND,
         silent: !record.debug,
         summary: record.debug
     })
@@ -86,7 +92,7 @@ listener.use(
         target: uri,
         changeOrigin: true,
         ws: true,
-        logLevel: proxyLogLevel
+        logLevel: proxy.logLevel
     })
 )
 console.log(`Proxy to (${uri}) enabled`)
