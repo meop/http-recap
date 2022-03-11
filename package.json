@@ -1,16 +1,17 @@
 {
   "name": "http-recap",
   "description": "A node.js http cache and tape recorder",
-  "version": "0.1.1",
+  "version": "0.1.2",
+  "type": "module",
   "license": "MIT",
   "author": "Marshall Porter",
   "main": "app.js",
   "dependencies": {
     "apicache": "^1.2.1",
-    "cors": "^2.8.4",
-    "express": "^4.16.3",
-    "http-proxy-middleware": "^0.18.0",
-    "moment": "^2.22.0",
-    "talkback": "^1.4.0"
+    "cors": "^2.8.5",
+    "dayjs": "^1.10.8",
+    "express": "^4.17.3",
+    "http-proxy-middleware": "^2.0.3",
+    "talkback": "^3.0.1"
   }
 }

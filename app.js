@@ -1,19 +1,17 @@
-const path = require('path')
-const moment = require('moment')
+import dayjs from 'dayjs'
+import express from 'express'
+import { options } from 'apicache'
 
-const express = require('express')
-const apicache = require('apicache')
+import middleware_cors from 'cors'
+import middleware_proxy from 'http-proxy-middleware'
 
-const middleware_cors = require('cors')
-const middleware_proxy = require('http-proxy-middleware')
+import talkback from 'talkback'
+import { local as _local, remotes, env, cache as _cache, record as _record, proxyLogLevel } from './config'
 
-const talkback = require('talkback')
-const config = require('./config')
-
-const local = config.local
-const remote = config.remotes.find(r => r.env === config.env)
-const cache = config.cache
-const record = config.record
+const local = _local
+const remote = remotes.find(r => r.env === env)
+const cache = _cache
+const record = _record
 
 let listener = express()
 
@@ -38,7 +36,7 @@ listener.use(
 console.log('CORS enabled')
 
 if (cache.enable) {
-    const middleware_cache = apicache.options({
+    const middleware_cache = options({
         debug: cache.debug,
         enabled: cache.enable,
         headerBlacklist: cache.ignoreHeaders,
@@ -56,13 +54,13 @@ if (cache.enable) {
 
 if (record.enable) {
     const session = record.tapeInSessions
-        ? moment().format("YYYY-MM-DD-HH_mm_ss")
+        ? dayjs().format("YYYY-MM-DD-HH_mm_ss")
         : record.tapeToUseWhenNotInSessions
 
     let recorder = talkback({
         host: remote.uri,
         port: local.port.record,
-        path: `tapes/${config.env}/${session}`,
+        path: `tapes/${env}/${session}`,
         ignoreHeaders: record.ignoreHeaders,
         ignoreBody: record.ignoreBody,
         record: !record.recapOnly,
@@ -88,7 +86,7 @@ listener.use(
         target: uri,
         changeOrigin: true,
         ws: true,
-        logLevel: config.proxyLogLevel
+        logLevel: proxyLogLevel
     })
 )
 console.log(`Proxy to (${uri}) enabled`)
