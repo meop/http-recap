@@ -10,7 +10,7 @@
     "apicache": "^1.2.1",
     "cors": "^2.8.5",
     "dayjs": "^1.10.8",
-    "express": "^4.17.3",
+    "express": "^4.19.2",
     "http-proxy-middleware": "^2.0.3",
     "talkback": "^3.0.1"
   }
